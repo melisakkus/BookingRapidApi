@@ -1,0 +1,34 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+@await Component.InvokeAsync("_HeadViewComponentPartial")
+
+<body>
+
+    @await Component.InvokeAsync("_LoaderandBeforeViewComponentPartial")
+
+    @await Component.InvokeAsync("_HeaderViewComponentPartial")
+    
+    @await Component.InvokeAsync("_SliderViewComponentPartial")
+
+    @await Component.InvokeAsync("_AboutUsViewComponentPartial")
+
+    @await Component.InvokeAsync("_InfoViewComponentPartial")
+
+    @await Component.InvokeAsync("_HotelsViewComponentPartial")
+
+    @await Component.InvokeAsync("_GalleryViewComponentPartial")
+    
+    @await Component.InvokeAsync("_ServicesViewComponentPartial")
+    
+    @await Component.InvokeAsync("_FooterViewComponentPartial")
+        
+    @await Component.InvokeAsync("_ScriptsViewComponentPartial")
+
+</body>
+
+</html>

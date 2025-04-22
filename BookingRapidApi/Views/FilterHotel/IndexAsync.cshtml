@@ -1,0 +1,33 @@
+﻿@model List<FilterHotel.Data>
+@{
+    ViewData["Title"] = "IndexAsync";
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Hotel ID</th>
+            <th>Hotel Name</th>
+            <th>Review Score</th>
+            <th>Country</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var dataItem in Model)
+        {
+            foreach (var hotel in dataItem.hotels)
+            {
+                <tr>
+                    <td>@hotel.hotel_id</td>
+                    <td>@hotel.property?.name</td>
+                    <td>@hotel.property?.reviewScore</td>
+                    <td>@hotel.property?.countryCode</td>
+                    <td>@hotel.property?.latitude</td>
+                    <td>@hotel.property?.longitude</td>
+                </tr>
+            }
+        }
+    </tbody>
+    </table>
