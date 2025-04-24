@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*_SliderViewComponentPartial*@
+
+@* @model FilterHotel.Data
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Hotel ID</th>
+            <th>Hotel Name</th>
+            <th>Review Score</th>
+            <th>Country</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var hotel in Model.hotels)
+            {
+                <tr>
+                    <td>@hotel.hotel_id</td>
+                    <td>@hotel.property?.name</td>
+                    <td>@hotel.property?.reviewScore</td>
+                    <td>@hotel.property?.countryCode</td>
+                    <td>@hotel.property?.latitude</td>
+                    <td>@hotel.property?.longitude</td>
+                </tr>
+            }
+    </tbody>
+</table> *@
+
+
+@* <label>Şehir ID</label>
+@if (ViewBag.destinationId != null)
+{
+    <p>@ViewBag.destinationId</p>
+}
+else
+{
+    <p>Şehir ID bulunamadı.</p>
+} *@
+
+
+----
+
+@* @model List<Destination.Datum>
+ *@
+@* <th>@ViewBag.destinationId</th>
+ *@
+@* <table class="table table-bordered">
+    <tr>
+        <td>id</td>
+        <td>ad</td>
+        <td>Şehir</td>
+        <td>Ülke</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.dest_id</td>
+            <td>@item.name</td>
+            <td>@item.city_name</td>
+            <td>@item.country</td>
+        </tr>
+    }
+</table> *@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Şehir ID Bul</h2>
+
+<form id="cityForm">
+    <div class="col-lg-12 my-4 position-relative">
+        <label for="cityNameInput" class="form-label text-uppercase">Şehir</label>
+        <input type="text" id="cityNameInput" name="cityName" class="form-control" placeholder="Şehir..." />
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        <span>
+            Rezervasyon Oluştur
+        </span>
+    </button>
+</form>
+
+<div id="resultContainer" class="mt-4"></div>
+
+<script>
+    $(document).ready(function () {
+        // Form gönderildiğinde AJAX çağrısı yapılacak
+        $('#cityForm').on('submit', function (e) {
+            e.preventDefault(); // Sayfa yenilenmesini engelle
+
+            var cityName = $("#cityNameInput").val();
+
+            $.ajax({
+                url: "/DestinationId/GetDestinationId",  // Controller'daki action URL
+                type: "POST",
+                data: { cityName: cityName },
+                success: function (result) {
+                    if (result.destinationId) {
+                        $("#resultContainer").html("Şehir ID: " + result.destinationId);
+                    } else {
+                        $("#resultContainer").html(result.error || "Şehir ID bulunamadı.");
+                    }
+                },
+                error: function () {
+                    $("#resultContainer").html("Bir hata oluştu.");
+                }
+            });
+        });
+    });
+</script>
+

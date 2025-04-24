@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "GetDestId";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<h1>Ajax ile Destination Id alma</h1>
+
+<label>Şehir Adı: </label>
+<input type="text" id="cityName" class="customerName" />
+<br />
+<button class="btn btn-info" id="getDestId">Id Getir</button>
+
+<div id="sonucAlani"></div>
+
+
+<script>
+    $(document).ready(function () { // Sayfa yüklendikten sonra JavaScript'in çalışmasını sağlar
+
+        $("#getDestId").click(function () {
+            let cityName = $("#cityName").val();
+
+            $.ajax({
+                url: "/Test/GetId/" + cityName,
+                type: "GET",
+
+                success: function (data) {
+                    $("#sonucAlani").text("Destination Id: " + data); 
+                },
+                error: function (xhr, status, error) {
+                    console.error("Hata oluştu:", status, error);
+                    $("#sonucAlani").text("Id alınamadı. Bir hata oluştu."); 
+                }
+            });
+        });
+    });
+</script>

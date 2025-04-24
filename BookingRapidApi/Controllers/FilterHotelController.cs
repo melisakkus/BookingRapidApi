@@ -9,11 +9,8 @@ namespace BookingRapidApi.Controllers
         public async Task<IActionResult> Index()
         {
             int destinationId = -755070;
-            DateTime arrivalDate = new DateTime(2025, 4, 23);
-            DateTime depatureDate = new DateTime(2025, 5, 22);
-            string arrivalDateStr = arrivalDate.ToString("yyyy-MM-dd");
-            string depatureDateStr = depatureDate.ToString("yyyy-MM-dd");
-
+            string arrivalDateStr = new DateTime(2025, 4, 23).ToString("yyyy-MM-dd");
+            string depatureDateStr = new DateTime(2025, 5, 22).ToString("yyyy-MM-dd");
             int adults = 2;
             int room = 1;
 
