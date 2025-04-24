@@ -12,7 +12,7 @@ BookingRapidApi, kullanıcıların çeşitli kriterlere göre otel arayabilecekl
 
 Bu sayede, kullanıcılar farklı otelleri kolayca karşılaştırarak en uygun seçeneği seçebiliyorlar.
 
-Not: Veriler, RapidAPI üzerinden entegre edilen Booking API aracılığıyla gerçek zamanlı olarak alınmakta ve AJAX (jQuery) teknolojisiyle sayfa yenilenmeden dinamik olarak kullanıcıya sunulmaktadır.
+Veri Kaynağı:  Veriler, RapidAPI üzerinden entegre edilen Booking API aracılığıyla gerçek zamanlı olarak alınmakta ve AJAX (jQuery) teknolojisiyle sayfa yenilenmeden dinamik olarak kullanıcıya sunulmaktadır.
 
 ## Backend
 •	ASP.NET Core MVC – Web uygulama altyapısı
