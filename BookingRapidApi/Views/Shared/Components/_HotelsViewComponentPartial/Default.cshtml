@@ -1,10 +1,12 @@
 ﻿@*_HotelsViewComponentPartial*@
 
+@model List<FilterHotel.Hotel>
+
 <section id="room" class="padding-medium">
     <div class="container-fluid padding-side" data-aos="fade-up">
         <div class="d-flex flex-wrap align-items-center justify-content-between">
-            <div>
-                <h3 class="display-3 fw-normal text-center">Otelleri Keşfet...</h3>
+            <div class="text-center">
+                <h3 class="display-3 fw-normal text-center">Diğer Otellerimiz</h3>
             </div>
             <a href="index.html" class="btn btn-arrow btn-primary mt-3">
                 <span>
@@ -15,6 +17,7 @@
                 </span>
             </a>
         </div>
+
 
         <div class="swiper room-swiper mt-5">
             <div class="swiper-wrapper">
@@ -192,7 +195,7 @@
                 </div>
                 <div class="swiper-slide">
                     <div class="room-item position-relative bg-black rounded-4 overflow-hidden">
-                        <img src="images/room3.jpg" alt="img" class="post-image img-fluid rounded-4">
+                        <img src="~/mellow-1.0.0/images/room3.jpg" alt="img" class="post-image img-fluid rounded-4">
                         <div class="product-description position-absolute p-5 text-start">
                             <h4 class="display-6 fw-normal text-white">Sweet Family room</h4>
                             <p class="product-paragraph text-white">

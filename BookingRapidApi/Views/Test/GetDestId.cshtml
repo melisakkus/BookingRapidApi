@@ -8,29 +8,102 @@
 <label>Şehir Adı: </label>
 <input type="text" id="cityName" class="customerName" />
 <br />
-<button class="btn btn-info" id="getDestId">Id Getir</button>
 
-<div id="sonucAlani"></div>
+<label>Varış Tarihi: </label>
+<input type="date" id="arrivalDate" class="customerName" />
+<br />
 
+<label>Çıkış Tarihi: </label>
+<input type="date" id="departureDate" class="customerName" />
+<br />
+
+<label>Oda Sayısı: </label>
+<input type="number" id="room" class="customerName" />
+<br />
+
+<label>Kişi Sayısı: </label>
+<input type="number" id="person" class="customerName" />
+<br />
+
+<button class="btn btn-info" id="getHotelsButton">Otelleri Getir</button>
+
+<%-- Area to display status/results --%>
+<div id="resultArea" class="mt-3">
+    <p id="statusMessage"></p>
+    <div id="hotelListArea">
+        <%-- Hotel results will be loaded here --%>
+    </div>
+</div>
 
 <script>
     $(document).ready(function () { // Sayfa yüklendikten sonra JavaScript'in çalışmasını sağlar
 
-        $("#getDestId").click(function () {
+        $("#getHotelsButton").click(function () {
             let cityName = $("#cityName").val();
+            let arrivalDate = $("#arrivalDate").val();
+            let departureDate = $("#departureDate").val();
+            let roomCount = $("#room").val();
+            let personCount = $("#person").val();
+
+            // Basic validation (optional but recommended)
+            if (!cityName || !arrivalDate || !departureDate || !roomCount || !personCount) {
+                $("#statusMessage").text("Lütfen tüm alanları doldurun.").css('color', 'red');
+                $("#hotelListArea").empty(); // Clear previous results
+                return; // Stop execution
+            }
+
+            // --- First AJAX Call: Get Destination ID ---
 
             $.ajax({
                 url: "/Test/GetId/" + cityName,
                 type: "GET",
 
-                success: function (data) {
-                    $("#sonucAlani").text("Destination Id: " + data); 
+                success: function (receivedDestId) {
+                    $("#statusMessage").text("Destination ID alındı: " + receivedDestId + ". Oteller aranıyor...").css('color', 'blue');
+
+                    // --- Second AJAX Call: Get Hotels (Nested Inside First Success) ---
+
+                    $.ajax({
+                        // Make sure parameter names match the controller action
+                        url: `/Test/GetFilterHotels/${receivedDestId}/${arrivalDate}/${departureDate}/${personCount}/${roomCount}`,
+                        type: "GET",
+
+                        success: function (hotelData) {
+                            $("#statusMessage").text("Oteller başarıyla alındı.").css('color', 'green');
+                            $("#hotelListArea").empty(); // Clear previous list
+
+                            if (hotelData && hotelData.length > 0) {
+                                let hotelListHtml = "<ul>";
+                                // Assuming hotelData is an array of hotel objects
+                                // Adjust property names (e.g., 'name', 'address') based on your actual FilterHotel structure
+                                hotelData.forEach(function (hotel) {
+                                    hotelListHtml += `<li>${hotel.property.name || 'İsim Yok'} - ${hotel.address || 'Adres Yok'}</li>`;
+                                });
+                                hotelListHtml += "</ul>";
+                                $("#hotelListArea").html(hotelListHtml);
+                            } else {
+                                $("#hotelListArea").html("<p>Belirtilen kriterlere uygun otel bulunamadı.</p>");
+                            }
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Otel alma hatası:", status, error, xhr.responseText);
+                            $("#statusMessage").text("Oteller alınırken bir hata oluştu.").css('color', 'red');
+                            $("#hotelListArea").html(`<p>Hata Detayı: ${xhr.responseText || error}</p>`);
+                        }
+                    });
+                    // --- End of Second AJAX Call ---
+
                 },
+
                 error: function (xhr, status, error) {
-                    console.error("Hata oluştu:", status, error);
-                    $("#sonucAlani").text("Id alınamadı. Bir hata oluştu."); 
+                    console.error("Destination ID alma hatası:", status, error, xhr.responseText);
+                    $("#statusMessage").text("Destination ID alınamadı. Şehir adını kontrol edin veya API hatası.").css('color', 'red');
+                    $("#hotelListArea").empty(); // Clear area on error
+                    $("#hotelListArea").html(`<p>Hata Detayı: ${xhr.responseText || error}</p>`);
                 }
             });
+            // --- End of First AJAX Call ---
         });
     });
 </script>

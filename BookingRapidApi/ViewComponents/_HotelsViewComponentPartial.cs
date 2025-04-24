@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BookingRapidApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using static BookingRapidApi.Models.FilterHotel;
 
 namespace BookingRapidApi.ViewComponents
 {
@@ -8,6 +11,6 @@ namespace BookingRapidApi.ViewComponents
         {
             return View();
         }
-    }   
-    
+
+    }
 }
