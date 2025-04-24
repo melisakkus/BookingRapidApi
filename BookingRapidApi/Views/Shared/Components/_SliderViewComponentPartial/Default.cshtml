@@ -1,11 +1,44 @@
 ﻿@*_SliderViewComponentPartial*@
 
-@*  @model FilterHotel.Data
- *@
+@*  @model FilterHotel.Data *@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-@* <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
- *@
+
+<style>
+    .hotel-photo-thumbnail {
+        max-width: 100px; /* Limit width */
+        max-height: 75px; /* Limit height */
+        width: auto; /* Maintain aspect ratio */
+        height: auto; /* Maintain aspect ratio */
+        object-fit: cover; /* Crop image nicely */
+        border-radius: 0.25rem; /* Slightly rounded corners */
+        border: 1px solid #dee2e6; /* Subtle border */
+        display: block; /* Center image in cell if needed */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Optional: Style for the results area */
+    #resultAreaWrapper { /* Changed ID slightly to avoid conflict if #resultArea is used elsewhere */
+        padding: 20px;
+        background-color: #f8f9fa; /* Light background for the results section */
+        border-radius: 8px;
+        margin-top: 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
+        min-height: 100px; /* Give it some min height */
+    }
+
+    /* Ensure status message has some space */
+    #statusMessage {
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+    /* Ensure hotel list area resets padding/margin if showing alerts */
+    #hotelListArea .alert {
+        margin-bottom: 0;
+    }
+
+</style>
 
 <br />
 <section id="slider" data-aos="fade-up">
@@ -15,7 +48,8 @@
             <div class="row align-items-center m-auto pt-5 px-4 px-lg-0">
                 <div class="text-start col-md-6 col-lg-5 col-xl-6 offset-lg-1">
                     <h2 class="display-1 fw-normal">Hayalinizdeki konaklamayı kolayca bulun, güvenle rezerve edin</h2>
-                    <a href="index.html" class="btn btn-arrow btn-primary mt-3">
+                    <a href="#" class="btn btn-arrow btn-primary mt-3">
+                        <!-- Changed href to # to avoid navigation -->
                         <span>
                             Otelleri Keşfedin
                             <svg width="18" height="18">
@@ -25,47 +59,48 @@
                     </a>
                 </div>
                 <div class="col-md-6 col-lg-5 col-xl-4 mt-5 mt-md-0">
-
-                    <form id="form" class="form-group flex-wrap bg-white p-5 rounded-4 ms-md-5">
-
+                    <form id="hotelSearchForm" class="form-group flex-wrap bg-white p-5 rounded-4 ms-md-5">
+                        <!-- Changed form ID slightly -->
                         <h3 class="display-5">Online Rezervasyon</h3>
-
                         <div class="col-lg-12 my-4 position-relative">
-                            <label for="sehir" class="form-label text-uppercase">Şehİr</label>
-                            <input type="text" id="cityName" class="form-control" placeholder="Şehir..." />
+                            <label for="cityName" class="form-label text-uppercase">Şehİr</label>
+                            <input type="text" id="cityName" name="cityName" class="form-control" placeholder="Şehir..." required /> <!-- Added name and required -->
                         </div>
-
                         <div class="col-lg-12 my-4">
                             <label class="form-label text-uppercase">Giriş Tarihi</label>
-                            <div id="select-arrival-date"></div>
+                            <!-- Assuming your date picker JS targets this div -->
+                            <div id="select-arrival-date">
+                                <!-- Make sure your datepicker generates a hidden input like this -->
+                                <!-- <input type="hidden" name="select-arrival-date_value" value=""> -->
+                            </div>
                         </div>
-
                         <div class="col-lg-12 my-4">
                             <label class="form-label text-uppercase">Çıkış Tarİhİ</label>
-                            <div id="select-departure-date"></div>
+                            <!-- Assuming your date picker JS targets this div -->
+                            <div id="select-departure-date">
+                                <!-- Make sure your datepicker generates a hidden input like this -->
+                                <!-- <input type="hidden" name="select-departure-date_value" value=""> -->
+                            </div>
                         </div>
-
                         <div class="col-lg-12 my-4">
-                            <label class="form-label text-uppercase">Oda Sayısı</label>
-                            <input type="number" value="1" name="quantity" id="room" class="form-control text-black-50 ps-3">
+                            <label for="room" class="form-label text-uppercase">Oda Sayısı</label>
+                            <input type="number" value="1" min="1" name="roomCount" id="room" class="form-control ps-3" required> <!-- Changed name, added min/required -->
                         </div>
-
                         <div class="col-lg-12 my-4">
-                            <label class="form-label text-uppercase">Kİşİ Sayısı</label>
-                            <input type="number" value="1" name="quantity" id="person" class="form-control text-black-50 ps-3">
+                            <label for="person" class="form-label text-uppercase">Kİşİ Sayısı</label>
+                            <input type="number" value="1" min="1" name="personCount" id="person" class="form-control ps-3" required> <!-- Changed name, added min/required -->
                         </div>
-
                         <div class="d-grid">
-                            <button id="getHotelsButton" class="btn btn-arrow btn-primary mt-3">
+                            <button type="submit" id="getHotelsButton" class="btn btn-arrow btn-primary mt-3">
+                                <!-- Changed to type="submit" -->
                                 <span>
-                                    Rezervasyon Oluştur
+                                    Rezervasyon Ara <!-- Changed text slightly -->
                                     <svg width="18" height="18">
                                         <use xlink:href="#arrow-right"></use>
                                     </svg>
                                 </span>
                             </button>
                         </div>
-
                     </form>
                 </div>
             </div>
@@ -73,83 +108,190 @@
     </div>
 </section>
 
-<div id="resultArea" class="mt-3">
-    <p id="statusMessage"></p>
-    <div id="hotelListArea">
-        <%-- Hotel results will be loaded here --%>
+<!-- Results Area Wrapper -->
+<div class="container mt-5">
+    <div id="resultAreaWrapper">
+        <p id="statusMessage" role="alert"></p> <!-- Added role="alert" for accessibility -->
+        <div id="hotelListArea">
+            <!-- Results will load here -->
+        </div>
     </div>
 </div>
 
+
 <script>
     $(function () {
-        $("#getHotelsButton").click(function (event) { 
-            event.preventDefault(); 
+        // Use form submission event
+        $("#hotelSearchForm").submit(function (event) {
+            event.preventDefault(); // Prevent default form submission
 
-            let cityName = $("#cityName").val();
+            // Clear previous results and status
+            $("#statusMessage").text("").removeClass('alert alert-danger alert-info alert-success alert-warning');
+            $("#hotelListArea").empty();
+
+            // Get values (ensure date pickers populate hidden inputs correctly)
+            let cityName = $("#cityName").val().trim();
+            // *** IMPORTANT: Verify these selectors match your date picker's output ***
             let arrivalDate = $("input[name='select-arrival-date_value']").val();
             let departureDate = $("input[name='select-departure-date_value']").val();
+            // ***---------------------------------------------------------------***
             let roomCount = $("#room").val();
             let personCount = $("#person").val();
 
-            // Basic validation (optional but recommended)
-            if (!cityName || !arrivalDate || !departureDate || !roomCount || !personCount) {
-                $("#statusMessage").text("Lütfen tüm alanları doldurun.").css('color', 'red');
-                $("#hotelListArea").empty(); // Clear previous results
+            // Basic frontend validation
+            if (!cityName || !arrivalDate || !departureDate || !roomCount || !personCount || parseInt(roomCount) < 1 || parseInt(personCount) < 1) {
+                $("#statusMessage")
+                    .text("Lütfen tüm rezervasyon bilgilerini doğru bir şekilde doldurun.")
+                    .addClass('alert alert-warning');
                 return; // Stop execution
             }
 
+            // Optional: Add date validation (departure >= arrival)
+            if (new Date(departureDate) < new Date(arrivalDate)) {
+                $("#statusMessage")
+                    .text("Çıkış tarihi giriş tarihinden önce olamaz.")
+                    .addClass('alert alert-warning');
+                return;
+            }
+
+
+            $("#statusMessage").text("Bilgiler alınıyor, lütfen bekleyin...").addClass('alert alert-info');
+            $("#getHotelsButton").prop('disabled', true).find('span').text('Aranıyor...'); // Disable button during search
+
+
             // --- First AJAX Call: Get Destination ID ---
-
             $.ajax({
-                url: "/UI/GetId/" + cityName,
+                url: "/UI/GetId/" + encodeURIComponent(cityName), // Encode city name
                 type: "GET",
+                dataType: "json", // Expect JSON response
+                success: function (response) {
+                    // Assuming the response is the ID directly or an object containing it
+                    const receivedDestId = (typeof response === 'object' && response !== null && response.destinationId) ? response.destinationId : response;
 
-                success: function (receivedDestId) {
-                    $("#statusMessage").text("Destination ID alındı: " + receivedDestId + ". Oteller aranıyor...").css('color', 'blue');
+                    if (!receivedDestId || isNaN(parseInt(receivedDestId))) {
+                        console.error("Invalid Dest ID received:", receivedDestId);
+                        $("#statusMessage").text(`'${cityName}' için geçerli bir otel bölgesi ID'si bulunamadı. Şehir adını kontrol edin.`).removeClass('alert-info').addClass('alert-danger');
+                        $("#getHotelsButton").prop('disabled', false).find('span').text('Rezervasyon Ara'); // Re-enable button
+                        return;
+                    }
 
-                    // --- Second AJAX Call: Get Hotels (Nested Inside First Success) ---
+                    $("#statusMessage").text("Şehir bilgisi doğrulandı. Oteller aranıyor...").addClass('alert-info');
 
+                    // --- Second AJAX Call: Get Hotels ---
                     $.ajax({
-                        url: `/UI/GetFilterHotels/${receivedDestId}/${arrivalDate}/${departureDate}/${personCount}/${roomCount}`, // Corrected URL using template literals
+                        url: `/UI/GetFilterHotels/${receivedDestId}/${arrivalDate}/${departureDate}/${personCount}/${roomCount}`,
                         type: "GET",
-
+                        dataType: "json", // Expect JSON array of hotels
                         success: function (hotelData) {
-                            console.log("Received hotel data from backend:", hotelData); 
+                            console.log("Received hotel data:", hotelData);
 
-                            $("#statusMessage").text("Oteller başarıyla alındı.").css('color', 'green');
-                            $("#hotelListArea").empty(); // Clear previous list
+                            $("#statusMessage").removeClass('alert-info alert-warning alert-danger').addClass('alert-success');
 
-                            if (hotelData && hotelData.length > 0) {
-                                let hotelListHtml = "<ul>";
+                            if (hotelData && Array.isArray(hotelData) && hotelData.length > 0) {
+
+                                // *** ADDED SORTING LOGIC HERE ***
+                                hotelData.sort((a, b) => {
+                                    // Handle cases where property or reviewScore might be missing/null/not a number
+                                    const scoreA = (a.property && typeof a.property.reviewScore === 'number') ? a.property.reviewScore : 0; // Default to 0 if missing/invalid
+                                    const scoreB = (b.property && typeof b.property.reviewScore === 'number') ? b.property.reviewScore : 0; // Default to 0 if missing/invalid
+                                    return scoreB - scoreA; // Sort descending (higher score first)
+                                });
+                                // *** END OF SORTING LOGIC ***
+
+
+                                $("#statusMessage").text(`${hotelData.length} otel bulundu.`);
+                                $("#hotelListArea").empty();
+
+                                let hotelTableHtml = `
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th scope="col">Otel Adı</th>
+                                                        <th scope="col" class="text-center">Değerlendirme Sayısı</th>
+                                                        <th scope="col" class="text-center">Fotoğraf</th>
+                                                        <th scope="col" class="text-center">Puan</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="align-middle">
+                                        `;
 
                                 hotelData.forEach(function (hotel) {
-                                    hotelListHtml += `<li class='list-group-item'>${hotel.property?.name || 'İsim Yok'} - ${hotel.address || 'Adres Yok'}</li>`;
-                                });
-                                hotelListHtml += "</ul>";
-                                $("#hotelListArea").html(hotelListHtml);
-                            } else {
-                                $("#hotelListArea").html("<p>Belirtilen kriterlere uygun otel bulunamadı.</p>");
-                            }
+                                    const property = hotel.property || {}; // Handle cases where property might be null
+                                    const hotelName = property.name || 'İsim Yok';
+                                    const reviewCount = property.reviewCount ?? 'N/A';
+                                    const reviewScore = typeof property.reviewScore === 'number' ? property.reviewScore.toFixed(1) : 'N/A';
 
+                                    let photoHtml = '<span class="text-muted small">Foto Yok</span>';
+                                    if (property.photoUrls && Array.isArray(property.photoUrls) && property.photoUrls.length > 0 && property.photoUrls[0]) {
+                                        photoHtml = `<img src="${property.photoUrls[0]}" alt="${hotelName} Fotoğrafı" class="hotel-photo-thumbnail">`;
+                                    }
+
+                                    hotelTableHtml += `
+                                            <tr>
+                                                <td>${hotelName}</td>
+                                                <td class="text-center">${reviewCount}</td>
+                                                <td class="text-center">${photoHtml}</td>
+                                                <td class="text-center fw-bold">${reviewScore}</td>
+                                            </tr>
+                                        `;
+                                }); // End forEach
+
+                                hotelTableHtml += `
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        `;
+
+                                $("#hotelListArea").html(hotelTableHtml);
+
+                            } else {
+                                // No hotels found or unexpected data format
+                                $("#statusMessage").text("Belirtilen kriterlere uygun otel bulunamadı.").removeClass('alert-success').addClass('alert-warning');
+                                $("#hotelListArea").html('<div class="alert alert-warning" role="alert">Uygun otel bulunamadı. Lütfen kriterlerinizi değiştirip tekrar deneyin.</div>');
+                            }
+                            $("#getHotelsButton").prop('disabled', false).find('span').text('Rezervasyon Ara'); // Re-enable button
                         },
                         error: function (xhr, status, error) {
-                            console.error("Otel alma hatası:", status, error, xhr.responseText);
-                            $("#statusMessage").text("Oteller alınırken bir hata oluştu.").css('color', 'red');
-                            $("#hotelListArea").html(`<p>Hata Detayı: ${xhr.responseText || error}</p>`);
+                            console.error("Otel alma hatası:", status, error, xhr.status, xhr.responseText);
+                            let errorMsg = "Oteller alınırken sunucu hatası oluştu.";
+                            if (xhr.status === 404) {
+                                errorMsg = "Otel arama servisi bulunamadı (404).";
+                            } else if (xhr.status === 0) {
+                                errorMsg = "Ağ hatası veya sunucuya ulaşılamıyor.";
+                            } else if (xhr.responseText) {
+                                try {
+                                    const errData = JSON.parse(xhr.responseText);
+                                    errorMsg += ` Detay: ${errData.title || errData.message || xhr.responseText}`;
+                                } catch (e) {
+                                    errorMsg += ` Detay: ${xhr.responseText.substring(0, 200)}...`; // Show partial raw response
+                                }
+                            } else {
+                                errorMsg += ` (${status}: ${error})`;
+                            }
+                            $("#statusMessage").text(errorMsg).removeClass('alert-info alert-success alert-warning').addClass('alert-danger');
+                            $("#hotelListArea").html(`<div class="alert alert-danger" role="alert"><strong>Hata!</strong> ${errorMsg}</div>`);
+                            $("#getHotelsButton").prop('disabled', false).find('span').text('Rezervasyon Ara'); // Re-enable button
                         }
-                    });
-                    // --- End of Second AJAX Call ---
-
+                    }); // End Second AJAX Call
                 },
-
                 error: function (xhr, status, error) {
-                    console.error("Destination ID alma hatası:", status, error, xhr.responseText);
-                    $("#statusMessage").text("Destination ID alınamadı. Şehir adını kontrol edin veya API hatası.").css('color', 'red');
-                    $("#hotelListArea").empty(); // Clear area on error
-                    $("#hotelListArea").html(`<p>${errorMessage}</p>`);
+                    console.error("Destination ID alma hatası:", status, error, xhr.status, xhr.responseText);
+                    let errorMessage = "Şehir ID'si alınamadı.";
+                    if (xhr.status === 404) {
+                        errorMessage = `'${cityName}' için geçerli bir bölge bulunamadı veya servis mevcut değil (404).`;
+                    } else if (xhr.status === 0) {
+                        errorMessage = "Ağ hatası veya sunucuya ulaşılamıyor.";
+                    } else if (xhr.responseText) {
+                        errorMessage += ` Detay: ${xhr.responseText.substring(0, 200)}...`;
+                    } else {
+                        errorMessage += ` (${status}: ${error})`;
+                    }
+                    $("#statusMessage").text(errorMessage).removeClass('alert-info').addClass('alert-danger');
+                    $("#hotelListArea").empty();
+                    $("#getHotelsButton").prop('disabled', false).find('span').text('Rezervasyon Ara'); // Re-enable button
                 }
-            });
-            // --- End of First AJAX Call ---
-        });
-    });
+            }); // End First AJAX Call
+        }); // End form submit handler
+    }); // End document ready
 </script>
