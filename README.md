@@ -1,41 +1,31 @@
-# RapidApi  ile Otel Rezervasyon Projesi
+# Hotel Reservation Project with RapidApi
 
-BookingRapidApi, kullanıcıların çeşitli kriterlere göre otel arayabilecekleri ve en uygun seçenekleri kolayca karşılaştırarak görüntüleyebilecekleri bir otel listeleme platformu olarak tasarlandı. Kullanıcılar, otel aramalarını konum, kişi sayısı gibi farklı filtrelere göre yapabiliyor. Sonuçlar ise sade ve anlaşılır bir tablo formatında sunuluyor. Bu tabloda şu bilgiler yer alıyor:
+BookingRapidApi is designed as a hotel listing platform where users can search for hotels based on various criteria and easily compare and view the most suitable options. Users can perform hotel searches using different filters such as location and number of guests. The results are presented in a simple and clear table format. This table includes the following information:
 
-• Otel Adı
+• Hotel Name
+• Number of Reviews
+• Image (Photo)
+• User Rating
 
-• Değerlendirme Sayısı
+This allows users to easily compare different hotels and select the most suitable option.
 
-• Görsel (Fotoğraf)
-
-• Kullanıcı Puanı
-
-Bu sayede, kullanıcılar farklı otelleri kolayca karşılaştırarak en uygun seçeneği seçebiliyorlar.
-
-Veri Kaynağı:  Veriler, RapidAPI üzerinden entegre edilen Booking API aracılığıyla gerçek zamanlı olarak alınmakta ve AJAX (jQuery) teknolojisiyle sayfa yenilenmeden dinamik olarak kullanıcıya sunulmaktadır.
+Data Source: Data is retrieved in real-time through the Booking API integrated via RapidAPI and dynamically presented to the user without page refresh using AJAX (jQuery) technology.
 
 ## Backend
-•	ASP.NET Core MVC – Web uygulama altyapısı
 
-•	.NET 8.0 – Geliştirme platformu
+• ASP.NET Core MVC – Web application infrastructure
+• .NET 8.0 – Development platform
+• Entity Framework Core – ORM and data access
+• RapidAPI – Booking API – Retrieving hotel data
+• RESTful API – Communication with external services over HTTP
+• Newtonsoft.Json – JSON data parsing
+• ViewComponent – Managing modular structures within pages
 
-•	Entity Framework Core – ORM ve veri erişimi
-
-•	RapidAPI – Booking API – Otel verilerinin alınması
-
-•	RESTful API – HTTP üzerinden dış servislerle iletişim
-
-•	Newtonsoft.Json – JSON veri çözümleme
-
-•	ViewComponent – Sayfa içi modüler yapıların yönetimi
-
-  
 ## Frontend
-•	AJAX (jQuery) – Sayfa yenilenmeden veri alma ve güncelleme
 
-•	Bootstrap – Responsive arayüz tasarımı
-
-•	Razor (.cshtml) – Dinamik HTML sayfaları
+• AJAX (jQuery) – Data retrieval and updates without page refresh
+• Bootstrap – Responsive interface design
+• Razor (.cshtml) – Dynamic HTML pages
 
 
 ## Proje Görselleri
