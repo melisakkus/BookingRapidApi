@@ -3,8 +3,11 @@
 BookingRapidApi is designed as a hotel listing platform where users can search for hotels based on various criteria and easily compare and view the most suitable options. Users can perform hotel searches using different filters such as location and number of guests. The results are presented in a simple and clear table format. This table includes the following information:
 
 • Hotel Name
+
 • Number of Reviews
+
 • Image (Photo)
+
 • User Rating
 
 This allows users to easily compare different hotels and select the most suitable option.
@@ -14,17 +17,25 @@ Data Source: Data is retrieved in real-time through the Booking API integrated v
 ## Backend
 
 • ASP.NET Core MVC – Web application infrastructure
+
 • .NET 8.0 – Development platform
+
 • Entity Framework Core – ORM and data access
+
 • RapidAPI – Booking API – Retrieving hotel data
+
 • RESTful API – Communication with external services over HTTP
+
 • Newtonsoft.Json – JSON data parsing
+
 • ViewComponent – Managing modular structures within pages
 
 ## Frontend
 
 • AJAX (jQuery) – Data retrieval and updates without page refresh
+
 • Bootstrap – Responsive interface design
+
 • Razor (.cshtml) – Dynamic HTML pages
 
 
